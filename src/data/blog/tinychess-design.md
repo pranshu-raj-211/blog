@@ -3,7 +3,7 @@ author: Pranshu Raj
 pubDatetime: 2025-05-10T15:22:00.866Z
 title: Designing a minimal, local-first version of lichess.
 slug: designing-tinychess
-featured: true
+featured: false
 draft: false
 tags:
   - Go
