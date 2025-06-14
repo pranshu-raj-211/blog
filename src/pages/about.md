@@ -3,34 +3,27 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-AstroPaper is a minimal, responsive and SEO-friendly Astro blog theme. I designed and crafted this based on [my personal blog](https://satnaing.dev/blog).
+Hi, I'm **Pranshu Raj** — a backend engineer and systems thinker.
 
-This theme is aimed to be accessible out of the box. Light and dark mode are supported by
-default and additional color schemes can also be configured.
+I use this space to write about building scalable systems, working with real-time infrastructure, and making tools that help me (and hopefully others) think and work better.
 
-This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. So, see the documentation for more info.
+I tinker with real-time systems, build tools to offload thinking, and chase the balance between speed, simplicity, and usefulness.
 
-<div>
-  <img src="/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
-</div>
+## What You’ll Find Here
 
-## Tech Stack
+- **Tech deep dives** — performance tuning, real-time systems, backend tricks.
+- **Build logs** — documenting how I approach and ship personal projects.
+- **Tools & automations** — things I build to reduce friction in life and work.
+- **Ideas & reflections** — learning in public, experimenting with structure and focus.
 
-This theme is written in vanilla JavaScript (+ TypeScript for type checking) and a little bit of ReactJS for some interactions. TailwindCSS is used for styling; and Markdown is used for blog contents.
+I keep my rough notes in a separate [website](https://pranshu-raj-211.github.io)
 
-## Features
+## About This Site
 
-Here are certain features of this site.
+This blog is built using **Astro**, styled with **TailwindCSS**, and deployed via **Cloudflare Pages**. I picked this stack to keep things fast, simple, and distraction-free.
 
-- fully responsive and accessible
-- SEO-friendly
-- light & dark mode
-- fuzzy search
-- super fast performance
-- draft posts
-- pagination
-- sitemap & rss feed
-- highly customizable
+Check out my [GitHub](https://github.com/pranshu-raj-211) or reach out on [LinkedIn](https://linkedin.com/in/pranshuraj2004).
 
-If you like this theme, you can star/contribute to the [repo](https://github.com/satnaing/astro-paper).  
-Or you can even give any feedback via my [email](mailto:contact@satnaing.dev).
+---
+
+Stay curious.
