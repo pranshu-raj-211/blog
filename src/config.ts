@@ -4,6 +4,7 @@ export const SITE = {
   profile: "https://pranshu-raj.me/",
   desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
   title: "Systems & Sidequests",
+  ogImage: "og.png",
   lightAndDarkMode: true,
   postPerIndex: 4,
   postPerPage: 4,
