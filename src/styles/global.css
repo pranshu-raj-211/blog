@@ -54,6 +54,10 @@ html[data-theme="dark"] {
   }
 }
 
+p {
+  margin-bottom: 1.5rem !important; /* Adds more space between paragraphs */
+}
+
 .active-nav {
   @apply underline decoration-wavy decoration-2 underline-offset-4;
 }
