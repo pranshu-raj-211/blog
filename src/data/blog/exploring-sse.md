@@ -8,7 +8,7 @@ draft: false
 tags:
   - SSE
   - Websockets
-description: Something something
+description: Understanding Server Sent events and it's use cases, advantages over SSE
 ---
 
 I've been diving into Server-Sent Events (SSE) lately, trying to understand how it works, where it fits, and what its tradeoffs are. It’s an interesting protocol, especially compared to WebSockets and traditional HTTP streaming.
@@ -66,3 +66,7 @@ I plan to use Prometheus for monitoring and observability to track performance a
 5. Why is timeout used in SSE?To detect stalled connections and trigger reconnections.
 
 I’ll update this once I experiment with implementation details (scaling, basic done in Go) and get a better grasp of how SSE behaves in a real-world setting.
+
+
+##### Note:
+I've been working on a project that uses SSE ([leaderboard](https://github.com/pranshu-raj-211/leaderboard)). I'm going to try and experiment with the performance differences between SSE and websockets in this context, to provide quantitative results in a real world application. It's still a work in progress and has a long way to go, so do check it out.
