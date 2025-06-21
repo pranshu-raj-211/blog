@@ -2,7 +2,7 @@ export const SITE = {
   website: "https://blog.pranshu-raj.me/", // replace this with your deployed domain
   author: "Pranshu Raj",
   profile: "https://pranshu-raj.me/",
-  desc: "A minimal, responsive and SEO-friendly Astro blog theme.",
+  desc: "Pranshu's Blog.",
   title: "Systems & Sidequests",
   ogImage: "og.png",
   lightAndDarkMode: true,
