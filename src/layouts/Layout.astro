@@ -51,6 +51,15 @@ const structuredData = {
 <!doctype html>
 <html lang=`${SITE.lang ?? "en"}` class={`${scrollSmooth && "scroll-smooth"}`}>
   <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-21HDE43830"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-21HDE43830');
+      
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="google-site-verification" content="yePG2ioRi_T8dpUOq3XNi5XOUrikta9M3PiEwghKaKA" />
