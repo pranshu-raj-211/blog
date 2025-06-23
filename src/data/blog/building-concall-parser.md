@@ -17,6 +17,8 @@ Earnings calls are packed with crucial information, but trying to extract it fro
 
 We ([Jay Shah](https://www.linkedin.com/in/jay-shah-4a4829209/) and I) needed a way to programmatically get structured data out of this mess – with the end goal of building a full pipeline that can deliver insights and reduce time spent to understand how a company is doing.
 
+This resulted in a python package [`concall-parser`](https://pypi.org/project/concall-parser/), the code for which can be found [here](https://github.com/JS12540/concall-parser).
+
 ### The Problem: Unstructured PDFs Break Everything
 
 The core challenge here is turning a visually-oriented PDF document into clean, logically structured text that code can understand. When you pull text out of these transcripts, you don't just get the content; you get artifacts that completely disrupt parsing:
@@ -26,7 +28,7 @@ The core challenge here is turning a visually-oriented PDF document into clean, 
 - Spacing and paragraph breaks are inconsistent.
 
 These aren't just minor annoyances; they break any simple pattern-matching logic you might use later. If your code expects a clean word or phrase, noisy text like `m anagement` will cause it to fail.
-
+---
 ### The Pipeline
 
 We designed `concall-parser` as a multi-step process to handle this progressively. Here's the basic flow:
@@ -40,6 +42,8 @@ We designed `concall-parser` as a multi-step process to handle this progressivel
 5. **Output:** Provide the final structured data.
 
 Steps 2 and 3 were where most of the technical headaches (and interesting solutions) lay.
+
+---
 
 ### Tackling the Hard Parts
 
@@ -70,11 +74,15 @@ If a Moderator is present (which is usually the case), this becomes a lot easier
 
 If there isn't a moderator, heuristics and llm logic need to be applied.
 
+---
+
 ### The Output: Clean Data for Analysis
 
 After all this processing, `concall-parser` gives you structured data: a list of identified management personnel, the text of management's comments, and the Q&A pairs.
 
 This structured output is the whole point. It's clean, predictable, and ready for the next step. You can easily feed it into other scripts or libraries for NLP tasks like sentiment analysis, run simple code to pull out key numbers or metrics, or compare sections across different reports. We've managed to get the parser working reliably for a majority of companies in the Nifty 200 index, which shows the approach holds up against real-world variability.
+
+---
 
 ### What's Next
 
