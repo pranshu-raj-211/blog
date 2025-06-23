@@ -1,6 +1,7 @@
 ---
 author: Pranshu Raj
 pubDatetime: 2025-05-19T15:22:00.866Z
+modDatetime: 2025-06-23T08:50:45.000Z
 title: Building a Python Package to Turn Unstructured Data into Financial Insights
 slug: building-concall-parser
 featured: true
@@ -28,7 +29,9 @@ The core challenge here is turning a visually-oriented PDF document into clean, 
 - Spacing and paragraph breaks are inconsistent.
 
 These aren't just minor annoyances; they break any simple pattern-matching logic you might use later. If your code expects a clean word or phrase, noisy text like `m anagement` will cause it to fail.
+
 ---
+
 ### The Pipeline
 
 We designed `concall-parser` as a multi-step process to handle this progressively. Here's the basic flow:
