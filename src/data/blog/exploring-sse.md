@@ -1,6 +1,7 @@
 ---
 author: Pranshu Raj
 pubDatetime: 2025-03-13T15:22:00.866Z
+modDatetime: 2025-06-27T07:01:27.097Z
 title: Introducing Server Sent Events
 slug: exploring-sse
 featured: true
@@ -8,7 +9,7 @@ draft: false
 tags:
   - SSE
   - Websockets
-description: Understanding Server Sent events and it's use cases, advantages over SSE
+description: Understanding Server Sent events and it's use cases, advantages over other realtime protocols.
 ---
 
 I've been diving into Server-Sent Events (SSE) lately, trying to understand how it works, where it fits, and what its tradeoffs are. It’s an interesting protocol, especially compared to WebSockets and traditional HTTP streaming.
@@ -67,6 +68,33 @@ I plan to use Prometheus for monitoring and observability to track performance a
 
 I’ll update this once I experiment with implementation details (scaling, basic done in Go) and get a better grasp of how SSE behaves in a real-world setting.
 
+### Vertical Scaling SSE connections
 
-##### Note:
-I've been working on a project that uses SSE ([leaderboard](https://github.com/pranshu-raj-211/leaderboard)). I'm going to try and experiment with the performance differences between SSE and websockets in this context, to provide quantitative results in a real world application. It's still a work in progress and has a long way to go, so do check it out.
+I tried building a real time leaderboard that streams its state to consumers (broadcasting) through SSE. This is a great example of use cases of SSE, as communication is uni-directional and often requires real-time communication (multiplayer games, chess etc.).
+
+The testing setup does not mimic realistic traffic for now. This is intentional, I wanted to test how many connections can be made in a standalone manner before tackling the issue of realistic load.
+
+The testing manner is detailed at this [repo](https://github.com/pranshu-raj-211/benchmarks/leaderboard).
+
+Find the code for the server at [leaderboard](https://github.com/pranshu-raj-211/leaderboard).
+
+![Real time leaderboard benchmarking (15400 SSE connections)](@assets/images/real_time_lb_init.png)
+Reaches 15400 (or similar number of connections) before unable to connect due to queue getting full or memory issues. I do not know which, so I'm working on understanding more about it.
+
+_Update_: The 15400 connection limit was hit while testing on Windows. Since memory, CPU and other system metrics seemed to be fine, I dug deeper into the issue to figure out what exactly was the bottleneck.
+
+Specifically, I was getting this error:
+`conn 15400 failed: Get "http://127.0.0.1:8080/stream": dial tcp 127.0.0.1:8080: bind: An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full.`
+
+A quick google search revealed that this was a common problem on windows systems, often faced in applications like Docker.
+
+Digging deeper, I found that there was a hard connection limit that Windows puts on socket connections, at approximately 16,000 connections. Since some of these sockets are reserved, it stopped my application from creating any new ones when the limit for non-system usage was reached.
+
+This can be bypassed by forcibly increasing the limit, but I didn't wanna risk messing with the settings of Windows, which has been a pain to fix sometimes.
+
+_Update_: Crossed 28k connections
+
+![Grafana dashboard-28231 conns](@assets/images/fedora_28k_conns.png)
+The 28k limit this time is probably due to limit on number of file descriptors (ulimit) or some other system issue (ports getting exhausted, NAT table limits). Will check and update, but need to optimize memory usage first (growing too fast and not getting deallocated).
+
+### SSE vs Websocket benchmarking
