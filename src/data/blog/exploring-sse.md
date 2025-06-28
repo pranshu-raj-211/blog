@@ -87,7 +87,7 @@ The testing manner is detailed at this [repo](https://github.com/pranshu-raj-211
 
 Find the code for the server at [leaderboard](https://github.com/pranshu-raj-211/leaderboard).
 
-![Real time leaderboard benchmarking (15400 SSE connections)](@assets/images/real_time_lb_init.png)
+![Real time leaderboard benchmarking (15400 SSE connections)](@/assets/images/real_time_lb_init.png)
 * Reaches 15400 (or similar number of connections) before unable to connect due to queue getting full or memory issues. I do not know which, so I'm working on understanding more about it.
 
   _Update_: The 15400 connection limit was hit while testing on Windows. Since memory, CPU and other system metrics seemed to be fine, I dug deeper into the issue to figure out what exactly was the bottleneck.
@@ -103,7 +103,7 @@ This can be bypassed by forcibly increasing the limit, but I didn't wanna risk m
 
 
 
-![Grafana dashboard-28231 conns](@assets/images/fedora_28k_conns.png)
+![Grafana dashboard-28231 conns](@/assets/images/fedora_28k_conns.png)
 * _Update_: Crossed 28k connections
 
   The 28k limit this time is probably due to limit on number of file descriptors (ulimit) or some other system issue (ports getting exhausted, NAT table limits). Will check and update, but need to optimize memory usage first (growing too fast and not getting deallocated).
