@@ -14,6 +14,15 @@ description: Understanding Server Sent events and it's use cases, advantages ove
 
 I've been diving into Server-Sent Events (SSE) lately, trying to understand how it works, where it fits, and what its tradeoffs are. It’s an interesting protocol, especially compared to WebSockets and traditional HTTP streaming.
 
+## Table of Contents
+1. [What is SSE?](#what-is-sse)
+2. [SSE vs WebSockets vs HTTP Streaming](#sse-vs-websockets-vs-http-streaming)
+3. [How SSE Works](#how-sse-works)
+4. [Statefulness and Reconnection](#statefulness-and-reconnection)
+5. [Scaling SSE](#scaling-sse)
+6. [Observability & Performance](#observability--performance)
+7. [Benchmarking Leaderboard with SSE](#benchmarking-leaderboard-with-sse)
+
 ## What is SSE?
 
 SSE is a mechanism that allows a server to push updates to a client over a persistent, unidirectional HTTP connection. Unlike WebSockets, which require a two-way handshake and constant back-and-forth messages, SSE is simpler and lightweight. You don’t need to send extra headers with every message, making it efficient for real-time updates like live feeds or notifications.
@@ -46,7 +55,7 @@ One approach is to send an id field with each event, which the client can send b
 
 Proxying SSE can be a bit tricky. Since the connection is persistent, Layer 7 proxies (like Nginx) need to be properly configured to support long-lived connections. While it’s simpler than WebSockets, some proxies may still close the connection prematurely.
 
-Another concern is the six-connection limit in HTTP 1.1—this limit applies per domain in a browser. This means if you have multiple tabs open making SSE connections to the same server, you may run into limits. However, HTTP/2 mitigates this with multiplexing, allowing multiple streams over a single connection.
+> Note: Another concern is the six-connection limit in HTTP 1.1—this limit applies per domain in a browser. This means if you have multiple tabs open making SSE connections to the same server, you may run into limits. However, HTTP/2 mitigates this with multiplexing, allowing multiple streams over a single connection.
 
 ## Observability & Performance
 
@@ -79,22 +88,22 @@ The testing manner is detailed at this [repo](https://github.com/pranshu-raj-211
 Find the code for the server at [leaderboard](https://github.com/pranshu-raj-211/leaderboard).
 
 ![Real time leaderboard benchmarking (15400 SSE connections)](@assets/images/real_time_lb_init.png)
-Reaches 15400 (or similar number of connections) before unable to connect due to queue getting full or memory issues. I do not know which, so I'm working on understanding more about it.
+* Reaches 15400 (or similar number of connections) before unable to connect due to queue getting full or memory issues. I do not know which, so I'm working on understanding more about it.
 
-_Update_: The 15400 connection limit was hit while testing on Windows. Since memory, CPU and other system metrics seemed to be fine, I dug deeper into the issue to figure out what exactly was the bottleneck.
+  _Update_: The 15400 connection limit was hit while testing on Windows. Since memory, CPU and other system metrics seemed to be fine, I dug deeper into the issue to figure out what exactly was the bottleneck.
 
-Specifically, I was getting this error:
-`conn 15400 failed: Get "http://127.0.0.1:8080/stream": dial tcp 127.0.0.1:8080: bind: An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full.`
+  Specifically, I was getting this error:
+  `conn 15400 failed: Get "http://127.0.0.1:8080/stream": dial tcp 127.0.0.1:8080: bind: An operation on a socket could not be performed because the system lacked sufficient buffer space or because a queue was full.`
 
-A quick google search revealed that this was a common problem on windows systems, often faced in applications like Docker.
+  A quick google search revealed that this was a common problem on windows systems, often faced in applications like Docker.
 
 Digging deeper, I found that there was a hard connection limit that Windows puts on socket connections, at approximately 16,000 connections. Since some of these sockets are reserved, it stopped my application from creating any new ones when the limit for non-system usage was reached.
 
 This can be bypassed by forcibly increasing the limit, but I didn't wanna risk messing with the settings of Windows, which has been a pain to fix sometimes.
 
-_Update_: Crossed 28k connections
+
 
 ![Grafana dashboard-28231 conns](@assets/images/fedora_28k_conns.png)
-The 28k limit this time is probably due to limit on number of file descriptors (ulimit) or some other system issue (ports getting exhausted, NAT table limits). Will check and update, but need to optimize memory usage first (growing too fast and not getting deallocated).
+* _Update_: Crossed 28k connections
 
-### SSE vs Websocket benchmarking
+  The 28k limit this time is probably due to limit on number of file descriptors (ulimit) or some other system issue (ports getting exhausted, NAT table limits). Will check and update, but need to optimize memory usage first (growing too fast and not getting deallocated).
