@@ -3,7 +3,7 @@ author: Pranshu Raj
 pubDatetime: 2025-04-13T15:22:00.866Z
 title: A quick introduction to data modeling in real world applications
 slug: data-modeling
-featured: true
+featured: false
 draft: false
 tags:
   - Data
