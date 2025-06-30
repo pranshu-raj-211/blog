@@ -16,9 +16,10 @@ description: How I built a complete recruiting pipeline that finds candidates, s
 
 ## The Challenge
 
-Synapse asked us to build a real world app for their hackathon. The goal: **"Build a LinkedIn Sourcing Agent that finds profiles, scores candidates using a fit algorithm, and generates personalized outreach messages."**
+Recruiting is broken. Finding the right candidates is like searching for needles in a haystack, and when you do find them, your generic LinkedIn message gets lost in their inbox with 50 others.
 
-This was about solving the core recruiting problem: finding the right people and reaching out effectively.
+For Synapse's AI hackathon, the challenge was clear: **"Build a LinkedIn Sourcing Agent that finds profiles, scores candidates using AI, and generates personalized outreach messages."**
+
 
 ## What I Built
 
@@ -152,13 +153,25 @@ For production use (100s of jobs daily):
 4. Github profile scraping: Got false positives of organizations (huggingface). Did not integrate into final for this reason.
 
 
-## Future Improvements
+## Future Roadmap
 
-- **Docker deployment** for easy scaling
-- **Advanced deduplication** using bloom filters
-- **Finish MongoDB integration** using motor for async operations 
-- **A/B testing** for prompt effectiveness
-- **Multi-platform integration** (Twitter, personal websites)
+### Short Term (1-2 months)
+- [ ] Complete MongoDB async integration with Motor
+- [ ] Docker containerization for deployment
+- [ ] Enhanced deduplication using bloom filters
+- [ ] A/B testing framework for prompt optimization
+
+### Medium Term (3-6 months)
+- [ ] Multi-platform integration (Twitter, personal websites)
+- [ ] Advanced ML models for candidate scoring
+- [ ] Real-time job market insights
+- [ ] Integration with ATS systems
+
+### Long Term (6+ months)
+- [ ] Predictive analytics for hiring success
+- [ ] Automated interview scheduling
+- [ ] Bias detection and mitigation
+- [ ] Custom model training for specific companies
 
 ## Try It Yourself
 
