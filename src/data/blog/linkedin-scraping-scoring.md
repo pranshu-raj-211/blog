@@ -108,21 +108,27 @@ Testing with the Windsurf ML Research Engineer role:
 }
 ```
 
-**Why this works:**
+**Why this works for this JD:**
 - Specific achievements (ICML paper)
 - Career progression understanding
 - Clear connection to role requirements
 
+---
+
 ## What I Learned
 
 ### 1. Focus on the Algorithm, Not the Data Collection
-Anyone can scrape LinkedIn. The value is in smart scoring that understands candidate quality beyond keywords.
+Anyone can scrape LinkedIn*. The value is in smart scoring that understands candidate quality beyond keywords.
+
+> Scraping Linkedin is a really difficult thing to do in practice, so everyone uses APIs provided by services like RapidAPI, BrightData. I know this because I tried to scrape it a lot a year ago.
 
 ### 2. Personalization Actually Works  
-Generic outreach gets 2-3% response rates. AI-generated personalized messages referencing specific achievements can hit 15%+.
+Generic outreach gets low response rates. AI-generated personalized messages referencing specific achievements can convert a lot of leads.
+
+As a fallback, we always have template messages.
 
 ### 3. Production Thinking From Day 1
-Built with FastAPI, async processing, proper error handling, and caching. This isn't a demo - it's designed to scale.
+Built with FastAPI, async processing, proper error handling, and caching. This is designed to scale easily.
 
 ### 4. Multi-Source Data is Key
 Combining LinkedIn + GitHub profiles gives much richer candidate insights than either alone.
@@ -131,18 +137,27 @@ Combining LinkedIn + GitHub profiles gives much richer candidate insights than e
 
 For production use (100s of jobs daily):
 
-1. **Async Processing**: Already built with asyncio for parallel job handling
-2. **Queue System**: Redis/Celery integration partially implemented  
+1. **Async Processing**: Already built with asyncio for parallel job handling. Can explore multiprocessing as well
+2. **Queue System**: Redis/Celery integration template implemented, integration remains 
 3. **Database**: MongoDB for caching profiles and storing results
 4. **Rate Limiting**: Smart backoff with API key rotation
-5. **Monitoring**: Comprehensive logging for performance tracking
+5. **Observability**: Comprehensive logging for performance tracking (add complex later)
+6. **Comprehensive Testing**: Including load testing, e2e and more
+
+## Challenges faced
+
+1. Managing multiple models to build the repo backfired: Claude gave structured code which did not work, I used Gemini and OpenAI models to fix it, which took a lot of time.
+2. Data validation issues: Took a lot of time and trials to debug and fix.
+3. Groq LLama variance: Did not generate JSON a lot of times - derailed the whole downstream logic.
+4. Github profile scraping: Got false positives of organizations (huggingface). Did not integrate into final for this reason.
+
 
 ## Future Improvements
 
 - **Docker deployment** for easy scaling
 - **Advanced deduplication** using bloom filters
-- **Custom ML models** for better skill matching  
-- **A/B testing** for message effectiveness
+- **Finish MongoDB integration** using motor for async operations 
+- **A/B testing** for prompt effectiveness
 - **Multi-platform integration** (Twitter, personal websites)
 
 ## Try It Yourself
