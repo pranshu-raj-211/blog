@@ -35,10 +35,10 @@ Instead of building another keyword matcher, I used LLMs to build something that
 ```
 Job Description → Search Query generation → Search (SerpAPI) → Scrape Profile (RapidAPI) → Profile Data → Scoring → Outreach Message generation → Results
 ```
-![data flow diagram](@assets/images/data_flow.png)
+![data flow diagram](@/assets/images/data_flow.png)
 
 
-![architecture](@assets/images/architecture_lnkd_scraper.png)
+![architecture](@/assets/images/architecture_lnkd_scraper.png)
 
 ### Key Components:
 - **FastAPI backend** with async processing
