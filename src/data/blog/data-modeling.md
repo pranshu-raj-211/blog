@@ -31,7 +31,7 @@ Attributes are things that describe an entity. Examples are - (name, author, ISB
 
 Relationships define connections between entities. For example books are connected to authors and genres.
 
-# The data modeling process
+## The data modeling process
 
 As with all sw processes, we should start by talking about some key considerations to keep in mind when designing a data model.
 
