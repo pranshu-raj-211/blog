@@ -1,7 +1,7 @@
 ---
 author: Pranshu Raj
-pubDatetime: 2025-07-01T3:50:00.866Z
-modDatetime: 2025-07-01T03:51:27.097Z
+pubDatetime: 2025-06-30T22:20:00.866Z
+modDatetime: 2025-07-01T07:22:48.375Z
 title: Building an AI LinkedIn Sourcing Agent
 slug: linkedin-scraping-scoring
 featured: true
