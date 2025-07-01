@@ -18,14 +18,13 @@ description: How I built a complete recruiting pipeline that finds candidates, s
 
 Recruiting is broken. Finding the right candidates is like searching for needles in a haystack, and when you do find them, your generic LinkedIn message gets lost in their inbox with 50 others.
 
-For Synapse's AI hackathon, the challenge was clear: **"Build a LinkedIn Sourcing Agent that finds profiles, scores candidates using AI, and generates personalized outreach messages."**
-
+For Synapse's AI hackathon, the challenge was to **"Build a LinkedIn Sourcing Agent that finds profiles, scores candidates using AI, and generates personalized outreach messages."**
 
 ## What I Built
 
 A complete LinkedIn sourcing pipeline with three core components:
 
-1. **Smart Candidate Discovery** - Multi-source search using SerpAPI and Google
+1. **Smart Candidate Discovery** - Multi-source search on Linkedin and Github
 2. **Intelligent Scoring** - 6-factor algorithm that thinks like a senior recruiter  
 3. **Personalized Outreach** - AI-generated messages using Llama via Groq
 
@@ -36,31 +35,33 @@ Instead of building another keyword matcher, I used LLMs to build something that
 ```
 Job Description → Search Query generation → Search (SerpAPI) → Scrape Profile (RapidAPI) → Profile Data → Scoring → Outreach Message generation → Results
 ```
-![data flow diagram](@/assets/images/data_flow.png)
 
+![data flow diagram](@/assets/images/data_flow.png)
+*Data flow diagram*
 
 ![architecture](@/assets/images/architecture_lnkd_scraper.png)
+*App architecture*
 
-### Key Components:
+### Key Components
+
 - **FastAPI backend** with async processing
 - **Multi-source data collection** (LinkedIn via RapidAPI, GitHub via web scraping)
 - **6-factor scoring algorithm** with confidence levels
 - **Smart caching** to avoid re-fetching profiles (set for small scale, bloom filters for large scale)
 - **Concurrency** using asyncio to execute multiple jobs quickly
 
-## The Scoring Algorithm That Matters
-
+## The Scoring Algorithm
 
 | Factor | Weight | What It Measures |
 |--------|--------|------------------|
 | **Education** | 20% | Elite schools get higher scores |
 | **Career Trajectory** | 20% | Clear progression vs. lateral moves |
-| **Company Relevance** | 15% | FAANG/relevant industry experience |
+| **Company Relevance** | 15% | Relevant industry experience |
 | **Skill Match** | 25% | How well skills align with job requirements |
 | **Location** | 10% | Geographic fit for the role |
 | **Tenure** | 10% | Stability vs. job hopping patterns |
 
-Since it's using LLMs, it doesn't check boxes - it understands context. A engineer who moved from startup → Google → senior role gets a higher trajectory score than someone who stayed at the same level for years.
+Since it's using LLMs, it understands context. A engineer who moved from startup → Google → senior role gets a higher trajectory score than someone who stayed at the same level for years.
 
 ## Smart Outreach Generation
 
@@ -72,11 +73,11 @@ Generic LinkedIn messages get ignored. My solution uses Llama (via Groq) to crea
 - Include clear next steps
 
 **Example output:**
-*"Hi Alex, I noticed your work at OpenAI on transformer architectures and your ICML 2023 paper on attention mechanisms. Your blend of research and production ML experience is exactly what Windsurf needs for their ML Research Engineer role..."*
+*"Hi John, I noticed your work at OpenAI on transformer architectures and your ICML 2023 paper on attention mechanisms. Your blend of research and production ML experience is exactly what Windsurf needs for their ML Research Engineer role..."*
 
 ## Key Technical Decisions
 
-### Why These Choices Mattered:
+### Why These Choices Mattered
 
 **Llama via Groq instead of OpenAI**: Faster, cheaper, and surprisingly good at personalized messaging
 
@@ -110,6 +111,7 @@ Testing with the Windsurf ML Research Engineer role:
 ```
 
 **Why this works for this JD:**
+
 - Specific achievements (ICML paper)
 - Career progression understanding
 - Clear connection to role requirements
@@ -119,19 +121,23 @@ Testing with the Windsurf ML Research Engineer role:
 ## What I Learned
 
 ### 1. Focus on the Algorithm, Not the Data Collection
+
 Anyone can scrape LinkedIn*. The value is in smart scoring that understands candidate quality beyond keywords.
 
 > Scraping Linkedin is a really difficult thing to do in practice, so everyone uses APIs provided by services like RapidAPI, BrightData. I know this because I tried to scrape it a lot a year ago.
 
-### 2. Personalization Actually Works  
+### 2. Personalization Actually Works
+
 Generic outreach gets low response rates. AI-generated personalized messages referencing specific achievements can convert a lot of leads.
 
 As a fallback, we always have template messages.
 
 ### 3. Production Thinking From Day 1
+
 Built with FastAPI, async processing, proper error handling, and caching. This is designed to scale easily.
 
 ### 4. Multi-Source Data is Key
+
 Combining LinkedIn + GitHub profiles gives much richer candidate insights than either alone.
 
 ## Scaling Strategy
@@ -139,7 +145,7 @@ Combining LinkedIn + GitHub profiles gives much richer candidate insights than e
 For production use (100s of jobs daily):
 
 1. **Async Processing**: Already built with asyncio for parallel job handling. Can explore multiprocessing as well
-2. **Queue System**: Redis/Celery integration template implemented, integration remains 
+2. **Queue System**: Redis/Celery integration template implemented, integration remains
 3. **Database**: MongoDB for caching profiles and storing results
 4. **Rate Limiting**: Smart backoff with API key rotation
 5. **Observability**: Comprehensive logging for performance tracking (add complex later)
@@ -152,22 +158,24 @@ For production use (100s of jobs daily):
 3. Groq LLama variance: Did not generate JSON a lot of times - derailed the whole downstream logic.
 4. Github profile scraping: Got false positives of organizations (huggingface). Did not integrate into final for this reason.
 
-
 ## Future Roadmap
 
 ### Short Term (1-2 months)
+
 - [ ] Complete MongoDB async integration with Motor
 - [ ] Docker containerization for deployment
 - [ ] Enhanced deduplication using bloom filters
 - [ ] A/B testing framework for prompt optimization
 
 ### Medium Term (3-6 months)
+
 - [ ] Multi-platform integration (Twitter, personal websites)
 - [ ] Advanced ML models for candidate scoring
 - [ ] Real-time job market insights
 - [ ] Integration with ATS systems
 
 ### Long Term (6+ months)
+
 - [ ] Predictive analytics for hiring success
 - [ ] Automated interview scheduling
 - [ ] Bias detection and mitigation
@@ -190,6 +198,7 @@ python app/main.py
 ```
 
 **API Usage:**
+
 ```bash
 curl -X POST "http://localhost:8000/jobs" \
   -H "Content-Type: application/json" \
@@ -207,6 +216,7 @@ curl -X POST "http://localhost:8000/jobs" \
 ## The Real Impact
 
 This isn't just a hackathon project. It's a solution that could:
+
 - Save recruiters hours of manual searching and screening
 - Increase response rates through personalized outreach
 - Reduce hiring bias through consistent, data-driven scoring
