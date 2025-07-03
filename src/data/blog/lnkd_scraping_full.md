@@ -56,8 +56,6 @@ That experience taught me LinkedIn scraping is essentially impossible without us
   - [Medium Term (3-6 months)](#medium-term-3-6-months)
   - [Long Term (6+ months)](#long-term-6-months)
 - [Try It Yourself](#try-it-yourself)
-- [Why This Solution Stands Out](#why-this-solution-stands-out)
-- [The Real Impact](#the-real-impact)
 
 ## What I Built
 
@@ -370,23 +368,6 @@ curl -X POST "http://localhost:8000/jobs" \
   -H "Content-Type: application/json" \
   -d '{"search_query": "ML Engineer at AI startup", "max_candidates": 10}'
 ```
-
-## Why This Solution Stands Out
-
-1. **High Concurrency** - Built with FastAPI, async processing, proper error handling, tests
-2. **Intelligent scoring algorithm** - Goes beyond keyword matching to understand candidate quality
-3. **Personalized outreach** - AI-generated messages that reference specific achievements  
-4. **Multi-source data** - Combines LinkedIn and GitHub for richer profiles
-5. **Scalable design** - Can handle multiple jobs in parallel with smart caching (async task queue with Redis + Celery template ready)
-
-## The Real Impact
-
-This isn't just a hackathon project. It's a solution that could:
-
-- Save recruiters hours of manual searching and screening
-- Increase response rates through personalized outreach
-- Reduce hiring bias through consistent, data-driven scoring
-- Find qualified candidates that keyword searches miss
 
 ---
 
