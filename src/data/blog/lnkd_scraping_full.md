@@ -17,20 +17,20 @@ description: How I built a complete recruiting pipeline that finds candidates, s
 
 Recruiting is broken. Finding the right candidates is like searching for needles in a haystack, and when you do find them, your generic LinkedIn message gets lost in their inbox with 50 others.
 
-For Synapse's AI hackathon, the challenge was to **"Build a LinkedIn Sourcing Agent that finds profiles, scores candidates using AI, and generates personalized outreach messages."**
+For Synapse's AI hackathon, the challenge was to "Build a LinkedIn Sourcing Agent that finds profiles, scores candidates using AI, and generates personalized outreach messages."
 
-Two years ago, I tried building exactly this - a LinkedIn scraper combined with a job recommendation engine. I was going to scrape LinkedIn profiles, match them to job requirements, and build something great. LinkedIn's anti-scraping measures crushed that dream within days.
+Two years ago, I tried building something similar: a LinkedIn scraper combined with a job recommendation engine. I was going to scrape LinkedIn jobs, match them to user resumes, and use that to reduce information overload in job searching. LinkedIn's anti-scraping measures crushed that dream within days.
 
-Back then, I had less technical knowledge but even with perfect execution, it wouldn't have worked. LinkedIn's defenses are just too aggressive. I pivoted to scraping job postings instead (Indeed, YCombinator) and flipped the problem - instead of finding candidates for jobs, I matched jobs to user resumes using Airflow for batch processing.
+Back then, I had less technical knowledge but even with perfect execution, it wouldn't have worked. LinkedIn's defenses are just too aggressive. I pivoted to scraping job postings from Indeed and YCombinator instead.
 
-That experience taught me LinkedIn scraping is essentially impossible without using paid solutions. So when this hackathon challenge came up, I was ready for round two.
+That experience taught me LinkedIn scraping is essentially impossible without using paid solutions. So when this hackathon challenge came up, I knew what not to do.
 
 ## **Table of Contents**
 
 - [The Challenge: Round two with an old nemesis](#the-challenge-round-two-with-an-old-nemesis)
 - [**Table of Contents**](#table-of-contents)
 - [What I Built](#what-i-built)
-  - [The Technical Architecture](#the-technical-architecture)
+  - [The Architecture](#the-architecture)
   - [The Scoring Algorithm](#the-scoring-algorithm)
   - [Smart Outreach Generation](#smart-outreach-generation)
   - [Sample Results](#sample-results)
@@ -44,9 +44,9 @@ That experience taught me LinkedIn scraping is essentially impossible without us
 - [Scaling Strategy](#scaling-strategy)
 - [The Real Challenges (And Why They Matter)](#the-real-challenges-and-why-they-matter)
 - [What actually worked well](#what-actually-worked-well)
-    - [Smart Caching Strategy](#smart-caching-strategy)
-    - [Async Processing Done Right](#async-processing-done-right)
-    - [The Scoring Algorithm That Makes Sense](#the-scoring-algorithm-that-makes-sense)
+  - [Caching](#caching)
+  - [Async Processing](#async-processing)
+  - [LLM based scoring](#llm-based-scoring)
 - [Scaling](#scaling)
   - [Code Quality \& Architecture](#code-quality--architecture)
   - [API key rotation](#api-key-rotation)
@@ -72,7 +72,7 @@ The core components:
 
 You can check out the full code [here](https://github.com/pranshu-raj-211/score_profiles).
 
-### The Technical Architecture
+### The Architecture
 
 I used FastAPI for the backend with async processing throughout. The data flow looks like this:
 
@@ -161,9 +161,7 @@ Testing with the Windsurf ML Research Engineer role:
 
 ### 1. Focus on the Algorithm, Not the Data Collection
 
-Anyone can scrape LinkedIn*. The value is in smart scoring that understands candidate quality beyond keywords.
-
-> Scraping Linkedin is a really difficult thing to do in practice, so everyone uses APIs provided by services like RapidAPI, BrightData.
+Anyone can scrape LinkedIn (using paid APIs to fetch data). The value is in smart scoring that understands candidate quality beyond keywords, to automate the manual tasks and reduce information that needs to be processed.
 
 ### 2. Personalization Actually Works
 
@@ -227,29 +225,21 @@ Lesson: Sometimes the "better" technical choice isn't worth the time cost, espec
 
 The biggest and stupidest issue that plagued me. A major chunk of my time building was debugging and fixing data validation issues, so I started doing a TDD style thing midway, made my logger verbose to capture a ton of context.
 
-6. **Managing multiple models to build the repo backfired**
-
-Since I don't have a Cursor or similar AI-IDE subscription, I tried putting my process through web based Claude, Gemini and OpenAI models (and later Github Copilot, which I didn't unlock Pro for until half the project was done).
-
-Claude gave structured code which did not work, I used Gemini and OpenAI models to fix it, which took a lot of time.
-
-Copilot helped iterate quickly - improving tests, iterating on issues and helped me wrap things up quickly.
-
 ---
 
 ## What actually worked well
 
-#### Smart Caching Strategy
+### Caching
 
 I implemented a simple profile caching that actually saves time and API costs. Before making any external calls, the system checks if we've seen this LinkedIn URL before. For a hackathon scale, simple file-based caching works fine. For production, I'd use Redis with proper TTL settings.
 
-#### Async Processing Done Right
+### Async Processing
 
 FastAPI with asyncio lets me process multiple candidates simultaneously. Instead of waiting 30 seconds for 10 profiles sequentially, I can get them all in 5-6 seconds.
 
 I could have used FastAPI's `BackgroundTasks`, but it wouldn't have made a lot of difference. It would be a lot more sensible to go to a task queue based setup for scaling (using Redis + Celery).
 
-#### The Scoring Algorithm That Makes Sense
+### LLM based scoring
 
 Rather than just keyword matching, LLMs understands context. An engineer who went from startup → Google → senior role gets higher trajectory scores than someone who's been at the same level for years. The LLM can recognize patterns that regex never could.
 
@@ -327,7 +317,7 @@ Circuit breakers: Fail fast when external services are down
 ### Short Term (1-2 months)
 
 - [ ] Complete MongoDB async integration with Motor
-- [ ] Docker containerization for deployment
+- [ ] Dockerization for consistency across environments
 - [ ] Enhanced deduplication using bloom filters
 - [ ] A/B testing framework for prompt optimization
 
