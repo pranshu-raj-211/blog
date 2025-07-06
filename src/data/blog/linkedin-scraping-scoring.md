@@ -2,9 +2,9 @@
 author: Pranshu Raj
 pubDatetime: 2025-06-30T22:20:00.866Z
 modDatetime: 2025-07-01T07:22:48.375Z
-title: Building an AI LinkedIn Sourcing Agent
+title: Building an AI LinkedIn Sourcing Agent (short)
 slug: linkedin-scraping-scoring
-featured: true
+featured: false
 draft: false
 tags:
   - Scraping
@@ -75,11 +75,5 @@ Example: *"Hi John, I noticed your transformer optimization work at Google Resea
 **LLM Consistency**: Groq returned proper JSON maybe 70% of the time. Had to build fallback parsing with regex.
 
 **Data Validation**: Biggest time sink. Started doing TDD-style development midway through.
-
-## Why This Matters
-
-This isn't just a hackathon project. It could save recruiters hours of manual work, increase response rates through personalization, and find qualified candidates that keyword searches miss.
-
-The expensive API solution turned out cheaper when you factor in development time. Sometimes paying for reliability beats fighting the system.
 
 **Try it yourself**: [GitHub Repository](https://github.com/pranshu-raj-211/score_profiles)
