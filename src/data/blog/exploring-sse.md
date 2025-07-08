@@ -15,6 +15,7 @@ description: Understanding Server Sent events and it's use cases, advantages ove
 I've been diving into Server-Sent Events (SSE) lately, trying to understand how it works, where it fits, and what its tradeoffs are. It’s an interesting protocol, especially compared to WebSockets and traditional HTTP streaming.
 
 ## Table of Contents
+
 - [Table of Contents](#table-of-contents)
 - [What is SSE?](#what-is-sse)
 - [How SSE Works: Peeking under the hood](#how-sse-works-peeking-under-the-hood)
@@ -68,6 +69,10 @@ data: {"user": "pranshu", "score": 9001}
 ### Client Side Implementation: The EventSource API
 
 On the client-side, browsers provide the native EventSource API, which handles all the complexity of connection management and parsing for you.
+
+```javascript
+var es = new EventSource("localhost:8000/stream")
+```
 
 ### Server Side Implementation (Go)
 
@@ -236,5 +241,6 @@ This can be bypassed by forcibly increasing the limit, but I didn't wanna risk m
 ![Grafana dashboard-28231 conns](@/assets/images/fedora_28k_conns.png)
 > _Update_: Crossed 28k connections
 
-  The 28k limit this time is probably due to limit on number of file descriptors (ulimit) or some other system issue (ports getting exhausted, NAT table limits). Will check and update, but need to optimize memory usage first (growing too fast and not getting deallocated).
+  The 28k limit this time is probably due to limit on number of file descriptors (ulimit) or some other system issue (ports getting exhausted, NAT table limits). Will check and update, but need to optimize memory usage first (growing too fast and not getting deallocated). This is a client issue, not a bottleneck on the server side. To fix this, I believe having multiple distributed clients each making a large number of connections to a server would find the true scaling capabilities of the server.
 
+  To do this, a standard way to test would be to host the server on a cloud instance (using docker on a VM of fixed size for standard environments), have multiple client VMs send a lot of requests to it. Since we already have Prometheus and Grafana setup on this server, it'll be easy to monitor changes as the number of client connections grows.
